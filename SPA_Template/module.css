@@ -1,0 +1,854 @@
+body {
+    background: #f3f3f3;
+    position: relative;
+}
+
+.row.no-padding .col-md-12 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+svg {
+    display: none;
+}
+
+.navbar-dark {
+    padding-top: 62px !important;
+    background-image: url("https://res.cloudinary.com/dgeb3iekh/image/upload/v1549936391/black-and-white-buildings-city-2255_wiimhh.jpg");
+    background-size: cover;
+    background-position: cover;
+    position: relative;
+}
+
+    .navbar-dark::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        z-index: 0;
+    }
+
+@media screen and (max-width: 768px) {
+    .navbar-dark {
+        padding: 7px 15px;
+    }
+}
+
+#resume-collapse {
+    justify-content: center;
+    padding-right: 40px;
+    padding-left: 40px;
+    height: 60px;
+}
+
+.nav-link {
+    border: 1px solid rgba(255,255,255,1);
+    margin-right: 15px;
+    color: white !important;
+    background: rgba(255,255,255, 0.15);
+    border-radius: 0;
+    height: 43px;
+}
+
+    .nav-link:hover {
+        border-color: rgba(255,255,255,.75);
+    }
+
+.dropdown-item {
+    color: #222 !important;
+}
+
+#logo-icon {
+    margin-right: 5px;
+    font-size: 1em;
+    display: inline-block;
+    color: white;
+    padding: 2px 10px;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid white;
+}
+
+#resume-brand {
+    font-size: 24px;
+    /*   background: rgb(0,123,255); */
+    font-family: ProximaNova, "Raleway";
+    padding: 18px 15px 18px 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-right: auto;
+    z-index: 2;
+}
+
+@media screen and (max-width: 1175px) {
+    #resume-brand {
+        font-size: 20px;
+    }
+}
+
+#color-dropdown {
+    display: flex;
+    align-items: center;
+}
+
+#color-indicator {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#colors {
+    padding: 15px 9px 9px 15px;
+}
+
+.swatch-row {
+    display: flex;
+}
+
+.swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    margin: 0 6px 6px 0;
+    background: attr(data-color);
+    cursor: pointer;
+}
+
+    .swatch[data-color="#222"] {
+        background: #222
+    }
+
+    .swatch[data-color="#FCB900"] {
+        background: #FCB900
+    }
+
+    .swatch[data-color="#7BDCB5"] {
+        background: #7BDCB5
+    }
+
+    .swatch[data-color="#00D084"] {
+        background: #00D084
+    }
+
+    .swatch[data-color="#8ED1FC"] {
+        background: #8ED1FC
+    }
+
+    .swatch[data-color="#ABB8C3"] {
+        background: #ABB8C3
+    }
+
+    .swatch[data-color="#0693E3"] {
+        background: #0693E3
+    }
+
+    .swatch[data-color="#EB144C"] {
+        background: #EB144C
+    }
+
+    .swatch[data-color="#F78DA7"] {
+        background: #F78DA7
+    }
+
+    .swatch[data-color="#9900EF"] {
+        background: #9900EF
+    }
+
+#color-input {
+    display: flex;
+}
+
+#color-hash {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background: #eee;
+    color: rgb(152, 161, 164);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+#color-input input {
+    width: 107px;
+    height: 30px;
+    border: none;
+    box-shadow: rgb(240, 240, 240) 0 0 0 1px inset;
+}
+
+#app-main {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+}
+
+#preview-wrapper {
+    flex-grow: 1;
+    padding-right: 15px;
+    margin: auto;
+}
+
+#toolbar {
+    padding: 15px 0;
+    max-width: 8.5in;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+    #toolbar .btn {
+        margin-right: 10px;
+        width: 50%;
+        transition: all .5s ease-in-out;
+        font-family: "Raleway";
+        font-weight: bold;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+        #toolbar .btn i {
+            font-size: 1.2em;
+            padding-right: 4px;
+        }
+
+.btn-print {
+    background: #0d76bd;
+    color: white;
+}
+
+    .btn-print:hover {
+        color: #0d76bd;
+        background: white;
+        border: 1px solid #0d76bd;
+    }
+
+.btn-pdf {
+    background: #1FCC92;
+    color: white;
+}
+
+    .btn-pdf:hover {
+        background: white;
+        color: #1FCC92;
+        border: 1px solid #1FCC92;
+    }
+
+    .btn-pdf .fa-spinner {
+        display: none;
+    }
+
+    .btn-pdf #generating, .btn-pdf-download #saveas {
+        display: none
+    }
+
+.btn-pdf-download #generating {
+    display: inline-block
+}
+
+.btn-pdf-download {
+    background: #ddd;
+    color: #6a737b
+}
+
+    .btn-pdf-download .fa-spinner {
+        animation: spin .7s linear infinite;
+        font-size: 1.2em;
+        color: #0d76bd;
+        display: inline-block;
+    }
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg)
+    }
+
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+#preview {
+    background: white;
+    font-family: "Raleway";
+    /*   border: 1px solid #eee; */;
+    height: 11in;
+    width: 8.5in;
+    padding: 20px 40px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    color: #222;
+    margin: 0 auto 15px auto;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    word-wrap: break-word
+}
+
+@media screen and (max-width: 1130px) {
+    #preview {
+        width: 100%;
+    }
+}
+
+.primary-text {
+    color: #222;
+    font-weight: bold;
+}
+
+.secondary-text {
+    color: #666;
+    font-weight: normal;
+}
+
+#preview #name {
+    font-size: 2.5em;
+}
+
+#contact {
+    margin-bottom: 20px;
+}
+
+#current-position {
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+#summary {
+    color: #666;
+    max-width: 100%;
+    word-wrap: break-word
+}
+
+.skills {
+    padding-bottom: 10px;
+}
+
+.exp-header {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    /*   border-bottom: 1px solid #0d76bd; */
+}
+
+.experience {
+    display: flex;
+    padding-bottom: 15px;
+}
+
+.exp-left {
+    flex-basis: 45%;
+    max-width: 45%;
+}
+
+.exp-right {
+    flex-basis: 55%;
+    max-width: 55%;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.experience div p {
+    margin-bottom: 3px;
+}
+
+.exp-left {
+    padding-right: 40px;
+}
+
+#accordion {
+    width: 450px;
+    margin-right: 20px;
+    background: #222;
+}
+
+@media screen and (max-width: 1130px) {
+    #accordion {
+        width: 320px;
+    }
+}
+
+.resume-card {
+    border-radius: 0 !important;
+    background-color: transparent;
+    border: none !important;
+}
+
+.card-body {
+    padding: 1.5rem 40px;
+    background: #222;
+    position: relative;
+}
+
+@media screen and (max-width: 1200px) {
+    .card-body {
+        padding: 15px;
+    }
+}
+
+.resume-card-header {
+    cursor: pointer;
+    /*   color: rgb(0,123,255); */
+    color: white !important;
+    /*   background-color: #888; */
+    background-color: #333 !important;
+    padding: 20px 15px 20px 40px !important;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0 !important;
+    transition: all .5s ease-in-out;
+}
+
+    .resume-card-header[aria-expanded="true"] {
+        background-color: #555 !important;
+        /*   border-left: 4px solid #0abde3; */
+        border-left: 4px solid #16a0db;
+        position: relative;
+    }
+
+    .resume-card-header h5 {
+        font-family: ProximaNova, "Raleway";
+        text-transform: uppercase;
+        font-size: 16px;
+        color: white !important;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        opacity: 0.6;
+        transition: all .5s linear;
+    }
+
+    .resume-card-header[aria-expanded="true"] h5 {
+        opacity: 1;
+    }
+
+    .resume-card-header h5 i {
+        padding-right: 10px;
+        opacity: 0.4;
+        transition: all .5s ease-in-out;
+        font-size: 1.2em;
+    }
+
+    .resume-card-header[aria-expanded="true"] h5 i {
+        color: #16a0db;
+        opacity: 1;
+    }
+
+.resume-card:nth-child(1) .resume-card-header {
+    border-top: none !important;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+    .form-group.top-group {
+        padding-top: 20px;
+    }
+
+.form-control {
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.12);
+}
+
+.input-holder .form-group input {
+    height: 44px;
+    border: none;
+    width: 100%;
+    border-radius: 0;
+    font-family: ProximaNova, "Raleway";
+}
+
+.label-hidden {
+    display: none;
+}
+
+/* .form-group:hover .label-hidden {
+  position: absolute;
+  right: 0;
+  background: white;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  display: flex !important;
+  padding-right: 15px;
+  text-transform: uppercase;
+  color: #666
+} */
+
+.input-holder .form-group textarea {
+    border-radius: 0;
+    border: none;
+    /*   background: rgba(255,255,255,0.15);
+  color: white;
+  border-bottom: 1px solid rgba(255,255,255,0.5); */
+}
+
+.form-row {
+    margin: 0 !important;
+}
+
+    .form-row .form-group.col-md-6:first-child {
+        padding: 0;
+        border-right: 1px solid #eee;
+    }
+
+    .form-row .form-group.col-md-6:nth-child(2) {
+        padding: 0;
+    }
+
+.experience-formats {
+    display: none;
+}
+
+.exp-format {
+    width: 50%;
+    text-align: center;
+    color: rgb(73, 80, 87);
+    background: #ddd;
+    padding: 7px;
+}
+
+.format-selected {
+    background: white;
+}
+
+.paragraph {
+}
+
+.add-btn-wrapper {
+    overflow: hidden;
+}
+
+.add-btn {
+    background: #1FCC92;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.12);
+    color: white;
+    font-family: ProximaNova, "Raleway";
+    padding: 8px;
+    text-align: center;
+    margin: 15px auto 0 auto;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+    /*   font-weight: bold; */
+    letter-spacing: 1.5px;
+    animation: slideLeft .3s ease-in-out;
+}
+
+    .add-btn:hover {
+        color: #1FCC92;
+        background: white;
+    }
+
+.edit-controls {
+    display: flex;
+    animation: slideUp .3s ease-in-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-100%)
+    }
+
+    to {
+        transform: translateX(0)
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        transform: translateX(100%)
+    }
+
+    to {
+        transform: translateX(0)
+    }
+}
+
+.edit-control {
+    width: 50%;
+    color: white;
+    padding: 8px;
+    transition: all .5s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+}
+
+    .edit-control.cancel {
+        background: #ff4757;
+    }
+
+        .edit-control.cancel:hover {
+            color: #ff4757;
+            background: white;
+        }
+
+    .edit-control.done {
+        background: #1FCC92;
+    }
+
+        .edit-control.done:hover {
+            color: #1FCC92;
+            background: white;
+        }
+
+.edit-label {
+    color: rgba(255,255,255,.95) !important;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-bottom: 1px solid white;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+}
+
+.edit-card {
+    padding: 10px 20px 10px 30px;
+    color: rgba(255,255,255,.5);
+    border-bottom: 1px solid rgba(255,255,255,.5);
+    position: relative;
+    min-height: 69px;
+    transition: all .2s ease-in-out;
+}
+
+.skill-card {
+    display: flex;
+    align-items: center;
+}
+
+.edit-card:hover {
+    color: rgba(255,255,255,.75);
+    border-bottom: 1px solid rgba(255,255,255,.75)
+}
+
+.edit-card p {
+    margin-bottom: 0;
+}
+
+.edit-btn {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-width: 40px;
+    color: white;
+    font-size: 1.2em;
+    height: 0;
+    opacity: 0.5;
+    transition: all .2s linear;
+    overflow: hidden;
+    cursor: pointer;
+    background: #222;
+}
+
+    .edit-btn:hover {
+        opacity: 1;
+    }
+
+    .edit-btn.edit {
+        right: 40px;
+        /*   background: rgb(0,123,255); */
+    }
+
+    /* .edit-btn.edit:hover {
+  color: #8060BA;
+} */
+
+    .edit-btn.delete {
+        right: 0;
+        /*   background: #ff4757; */
+    }
+
+        .edit-btn.delete:hover {
+            color: #ff4757;
+        }
+
+.edit-card:hover .edit-btn {
+    height: 100%;
+}
+
+.order-wrapper {
+    display: flex;
+    height: calc(100% - 10px);
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 40px;
+    transition: all .2s ease-in-out;
+    position: absolute;
+    left: -12px;
+}
+
+
+.order {
+    width: 0;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0.5;
+    font-size: 1.7em;
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+    transition: all .2s linear;
+}
+
+.edit-card:hover .order {
+    width: 40px;
+}
+
+.order:hover {
+    opacity: 1;
+}
+
+.order-up {
+    top: -8px;
+}
+
+.order-down {
+    top: 25px;
+}
+
+@media print {
+    .controlbarfix, .navbar-dark, footer {
+        display: none !important;
+    }
+
+    #accordion {
+        display: none;
+    }
+
+    #toolbar {
+        display: none;
+    }
+
+    #preview {
+        width: 100%;
+        margin: 0;
+        border: none;
+        font-size: 16px;
+        padding: .75in 1in;
+    }
+
+    @page {
+        margin: 0;
+    }
+}
+
+/* Custom modal styles */
+
+.custom-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    outline: 0;
+    background: rgba(0,0,0,0.6);
+    animation: modal-fade .3s linear;
+}
+
+@keyframes modal-fade {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes modal-window-slide {
+    from {
+        opacity: 0;
+        transform: translateY(-100%)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+.custom-modal .window {
+    position: relative;
+    margin: 3em auto;
+    max-width: 650px;
+    background: white;
+    border-radius: 5px;
+    padding: 20px;
+    animation: modal-window-slide .5s linear;
+}
+
+.modal-close {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background: #222;
+    color: white;
+    font-family: Oswald;
+    font-weight: bold;
+    font-size: 16px;
+    box-sizing: border-box;
+    border: 3px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(40%, -40%);
+    cursor: pointer;
+    box-shadow: 1px 2px rgba(0,0,0,0.4)
+}
+
+    .modal-close i.fa-times {
+        color: white;
+    }
+
+/* End Modal Styles */
+
+/*Autocomplete Styles */
+
+.no-suggestions {
+    color: #999;
+    padding: 0.5rem;
+}
+
+.suggestions {
+    border: 1px solid #999;
+    border-top-width: 0;
+    list-style: none;
+    margin-top: 0;
+    max-height: 143px;
+    overflow-y: auto;
+    padding-left: 0;
+    width: calc(300px + 1rem);
+}
+
+    .suggestions li {
+        padding: 0.5rem;
+    }
+
+        .suggestion-active,
+        .suggestions li:hover {
+            background-color: #008f68;
+            color: #fae042;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .suggestions li:not(:last-of-type) {
+            border-bottom: 1px solid #999;
+        }
+
+/* End Autocomplete */

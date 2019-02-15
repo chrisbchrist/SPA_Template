@@ -1,0 +1,1077 @@
+﻿[JavaScript:{ jsname: "JQuery" }]
+[JavaScript:{ jsname: "Knockout" }]
+[JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
+[JavaScript:{ path: "~/DesktopModules/SPA_Template/scripts/polyfills.js"}]
+[JavaScript:{ path: "~/DesktopModules/SPA_Template/scripts/download.js"}]
+[JavaScript:{ path: "~/DesktopModules/SPA_Template/scripts/AjaxCalls.js"}]
+[JavaScript:{ path: "~/DesktopModules/SPA_Template/Scripts/react-16.js"}]
+[JavaScript:{ path: "~/DesktopModules/SPA_Template/Scripts/react-dom-16.js"}]
+[JavaScript:{ path: "https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"}]
+
+<link href="https://fonts.googleapis.com/css?family=Cinzel|Open+Sans+Condensed:300|Playfair+Display+SC:400,700|Poiret+One|Raleway" rel="stylesheet">
+
+[ModuleAction:{controlKey : "Edit", securityAccessLevel : "Edit",  titleKey: "EditModule", localResourceFile: "~/DesktopModules/SPA_Template/App_LocalResources/View.resx" }]
+<div id="root"></div>
+<span class="btn btn-primary" id="apiTest">Test</span>
+<div id="Items-[ModuleContext:ModuleId]">
+    <ul class="tm_tl" data-bind="foreach: itemList">
+        <li class="tm_t">
+            <h3 data-bind="text: name"></h3>
+            <div class="tm_td" data-bind="text: description"></div>
+            <div data-bind="visible: $parent.editMode()">
+                <a data-bind="attr: {href: editUrl}">[Resx:{key:"EditItem"}]</a>
+                <a data-bind="click: $parent.deleteItem" href="#">[Resx:{key:"DeleteItem"}]</a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script type="text/babel">
+    //TODO: Redux away this enormous excess of state
+
+    class App extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {
+    resume: {
+    name: "James K. Polk",
+    currentPosition: "11th President",
+    location: "The White House, USA",
+    summary: "I seized the whole Southwest from Mexico",
+    email: "jkpolk@imdead.com",
+    phone: "123.456.7890",
+    experience: [{
+    title: "Not the President",
+    company: "America",
+    startDate: "1848",
+    endDate: "Death",
+    location: "Western Hemisphere",
+    description: "I accomplished all my stated goals in a single term and fulfilled my promise not to seek a second."
+    },
+    {
+    title: "11th President",
+    company: "America",
+    startDate: "1844",
+    endDate: "1848",
+    location: "Western Hemisphere",
+    description: "Instituted an indepenent treasury, made sure the tariffs fell and made the English sell the Oregon Territory."
+    } ],
+    education: [{
+    school: "Florida State University",
+    degree: "Presidential Studies",
+    startYear: "1832",
+    endYear: "1836",
+    location: "Florida",
+    achievements: "Fulfilled our Manifest Destiny"
+    }],
+    skills: ["Dazzling oratory", "Austerity", "Severity"],
+    },
+    color: "#0d76bd",
+    font: "Raleway"
+    }
+    this.updateOneField = this.updateOneField.bind(this);
+    this.addExperience = this.addExperience.bind(this);
+    this.addEducation = this.addEducation.bind(this);
+    this.setColor = this.setColor.bind(this);
+    this.setCustomColor = this.setCustomColor.bind(this);
+    this.setFont = this.setFont.bind(this);
+    this.updateExperience = this.updateExperience.bind(this);
+    this.updateEducation = this.updateEducation.bind(this);
+    this.deleteExperience = this.deleteExperience.bind(this);
+    this.deleteEducation = this.deleteEducation.bind(this);
+    this.addSkill = this.addSkill.bind(this);
+    this.updateSkill = this.updateSkill.bind(this);
+    this.deleteSkill = this.deleteSkill.bind(this);
+    this.reOrder = this.reOrder.bind(this);
+
+    }
+
+    updateOneField(field, val) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState[field] = val;
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    addExperience(exp) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.experience.push(exp);
+    this.setState({
+    resume: resumeState
+    })
+
+    }
+
+    addEducation(edu) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.education.push(edu);
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    setColor(e) {
+    const color = e.target.getAttribute('data-color');
+    this.setState({
+    color: color
+    })
+    }
+
+    setCustomColor(e) {
+    const value = "#" + e.target.value;
+    if (/^#[0-9A-F]{6}$/i.test(value)) {
+    this.setState({
+    color: value
+    })
+    }
+    }
+
+    setFont(e) {
+    const font = e.target.getAttribute('data-font');
+    this.setState({
+    font: font
+    })
+    }
+
+    updateExperience(exp, index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.experience[index] = exp;
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    updateEducation(edu, index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.education[index] = edu;
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    deleteExperience(index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.experience.splice(index, 1);
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    deleteEducation(index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.education.splice(index, 1);
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    addSkill(skill) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.skills.push(skill);
+    this.setState({
+    resume: resumeState
+    }, () => console.log(this.state.resume.skills))
+    }
+
+    updateSkill(skill, index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.skills[index] = skill;
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    deleteSkill(index) {
+    const resumeState = Object.assign({}, this.state.resume);
+    resumeState.skills.splice(index, 1);
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+    reOrder(collection, index, direction) {
+    const resumeState = Object.assign({}, this.state.resume);
+    var temp = resumeState[collection][index];
+    console.log(index, direction);
+    resumeState[collection][index] = resumeState[collection][index + direction];
+    resumeState[collection][index + direction] = temp;
+    this.setState({
+    resume: resumeState
+    })
+    }
+
+
+    render() {
+    return (
+    <div>
+        <Dashboard setColor={this.setColor}
+                   setCustomColor={this.setCustomColor}
+                   color={this.state.color}
+                   setFont={this.setFont} />
+        <div id="app-main">
+            <Editor update={this.updateOneField}
+                    resume={this.state.resume}
+                    addExperience={this.addExperience}
+                    addEducation={this.addEducation}
+                    updateExperience={this.updateExperience}
+                    updateEducation={this.updateEducation}
+                    deleteExperience={this.deleteExperience}
+                    deleteEducation={this.deleteEducation}
+                    addSkill={this.addSkill}
+                    updateSkill={this.updateSkill}
+                    deleteSkill={this.deleteSkill}
+                    reOrder={this.reOrder} />
+
+            <Preview resume={this.state.resume} color={this.state.color} font={this.state.font} />
+        </div>
+    </div>
+    )
+    }
+    }
+
+
+    class Dashboard extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+    }
+
+    render() {
+    return (
+    <nav className="navbar navbar-expand-sm navbar-dark flex-nowrap">
+        <button className="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbar5">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div id="resume-brand" className="navbar-brand"><div id="logo-icon"><i className="fas fa-user-tie"></i></div> <span style={{ paddingRight: "3px", fontWeight: "bold", color: "#16a0db"}}>Resumé</span><span style={{}}>Builder</span></div>
+        <div className="navbar-collapse collapse" id="resume-collapse">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <div className="dropdown">
+                        <div className="btn nav-link dropdown-toggle" href="#" role="button" id="color-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span style={{background: this.props.color}} id="color-indicator"></span>
+                            Color
+                        </div>
+
+                        <div className="dropdown-menu" id="colors" aria-labelledby="color-dropdown">
+                            <div className="swatch-row">
+                                <div data-color="#222" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#FCB900" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#7BDCB5" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#00D084" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#8ED1FC" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#0693E3" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#ABB8C3" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                            </div>
+                            <div className="swatch-row">
+                                <div data-color="#EB144C" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#F78DA7" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div data-color="#9900EF" className="swatch" onClick={this.props.setColor} tabIndex="0"></div>
+                                <div id="color-input">
+                                    <div id="color-hash">#</div>
+                                    <input maxLength="6" onChange={this.props.setCustomColor} type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li className="nav-item">
+                    <div className="dropdown">
+                        <div className="btn nav-link dropdown-toggle" href="#" role="button" id="font-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i className="fas fa-font"></i>
+                            &nbsp;Font
+                        </div>
+
+                        <div className="dropdown-menu" aria-labelledby="color-dropdown">
+                            <a onClick={(e) => this.props.setFont(e)} class="dropdown-item" href="#" data-font="Arial" style={{fontFamily: "Arial"}}>Arial</a>
+                            <a onClick={(e) => this.props.setFont(e)} class="dropdown-item" href="#" data-font="Raleway" style={{fontFamily: "Raleway"}}>Raleway</a>
+                            <a onClick={(e) => this.props.setFont(e)} class="dropdown-item" href="#" data-font="Open Sans Condensed" style={{fontFamily: "Open Sans Condensed"}}>Open Sans Condensed</a>
+                            <a onClick={(e) => this.props.setFont(e)} class="dropdown-item" href="#" data-font="ProximaNova" style={{fontFamily: "ProximaNova"}}>Proxima Nova</a>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    )
+    }
+    }
+
+    class Preview extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    modalShow: false,
+    downloading: false
+    }
+    this.save = this.save.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    }
+
+    print() {
+    window.print();
+    }
+
+    save() {
+    testAPI(this.props.resume)
+    }
+
+    closeModal() {
+    this.setState({
+    modalShow: false
+    })
+    }
+
+    render() {
+    return (
+    <div id="preview-wrapper">
+        <div id="toolbar">
+            <Modal show={this.state.modalShow} onClose={this.closeModal} />
+            <div className="btn btn-print" onClick={this.print}><i className="fas fa-print"></i> Print</div>
+            <div className={this.state.downloading ? "btn btn-pdf-download" : "btn btn-pdf" } onClick={!this.state.downloading && this.save}><i className={this.state.downloading ? "fas fa-spinner" : "fas fa-file-pdf" }></i> <span id="saveas">Save as PDF</span><span id="generating">Generating . . .</span></div>
+        </div>
+        <div id="preview" style={{fontFamily: this.props.font}}>
+            <h1 id="name" style={{color: this.props.color}}>{this.props.resume.name}</h1>
+            <p id="contact">
+                {this.props.resume.location}
+                {this.props.resume.email != "" && <span><span style={{color: this.props.color, opacity: 0.7}}> | </span><span style={{fontWeight: "bold"}}>E: </span>{this.props.resume.email}</span>}
+                {this.props.resume.phone != "" && <span><span style={{color: this.props.color, opacity: 0.7}}> | </span><span style={{fontWeight: "bold"}}>C: </span>{this.props.resume.phone}</span>}
+            </p>
+            <p id="current-position">{this.props.resume.currentPosition}</p>
+            <div id="summary">{this.props.resume.summary}</div>
+
+            {this.props.resume.skills.length > 0 && <p className="exp-header" style={{color: this.props.color}}><i className="fas fa-code"></i> Skills</p>}
+            <p className="secondary-text skills">
+                {this.props.resume.skills.map((skill, i) => {
+                return (
+                <span>{skill}{i < this.props.resume.skills.length - 1 && ", "}</span>
+                )
+                })}
+            </p>
+
+            {this.props.resume.experience.length > 0 && <p className="exp-header" style={{color: this.props.color}}><i className="fas fa-briefcase"></i> Experience</p>}
+            {this.props.resume.experience.map((job, i) => {
+            return (
+            <div className="experience">
+                <div className="exp-left">
+                    <p className="exp-company primary-text">{job.company}</p>
+                    <p className="exp-location secondary-text">{job.location}</p>
+                    <p className="exp-dates secondary-text">{job.startDate} - {job.endDate}</p>
+                </div>
+                <div className="exp-right">
+                    <p className="exp-title primary-text">{job.title}</p>
+                    <p className="exp-desc secondary-text">{job.description}</p>
+                </div>
+            </div>
+            )
+            })}
+
+            {this.props.resume.education.length > 0 && <p className="exp-header" style={{color: this.props.color}}><i className="fas fa-university"></i> Education</p>}
+            {this.props.resume.education.map((entry, i) => {
+            return (
+            <div className="experience">
+                <div className="exp-left">
+                    <p className="exp-company primary-text">{entry.school}<span className="secondary-text">, {entry.location}</span></p>
+                    <p className="exp-dates secondary-text">{entry.startYear} - {entry.endYear}</p>
+                </div>
+                <div className="exp-right">
+                    <p className="exp-title primary-text">{entry.degree}</p>
+                    <p className="exp-desc secondary-text">{entry.achievements}</p>
+                </div>
+            </div>
+            )
+            })}
+        </div>
+    </div>
+    )
+    }
+    }
+
+    // TODO: Break up this behemoth component
+    class Editor extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    education: {
+    school: "",
+    degree: "",
+    startYear: "",
+    endYear: "",
+    location: "",
+    achievements: ""
+    },
+    expEditIndex: ""
+    }
+    this.preventSubmit = this.preventSubmit.bind(this);
+    }
+
+    handleChange(e, field) {
+    const value = e.target.value;
+    if (field == "startYear" || field == "endYear") {
+
+    }
+    this.props.update(field, value)
+    }
+
+    preventSubmit(e) {
+    if (e.keyCode === 13) {
+    e.preventDefault();
+    }
+    }
+
+    render() {
+    return (
+    <div id="accordion">
+        <div className="resume-card card">
+            <div className="resume-card-header card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h5 className="mb-0">
+                    <i class="fas fa-address-card"></i>
+                    General
+                </h5>
+            </div>
+
+            <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div className="card-body">
+                    <div className="input-holder">
+                        <div className="form-group top-group">
+                            <label className="label-hidden">Name</label>
+                            <input onKeyPress={this.preventSubmit} maxlength="40" type="text" className="form-control" placeholder="Name" value={this.props.resume.name} onChange={(e) => this.handleChange(e, "name")}/>
+                        </div>
+                        <div className="form-group">
+                            <label className="label-hidden">Location</label>
+                            <input onKeyPress={this.preventSubmit} maxlength="40" type="text" className="form-control" placeholder="Location" value={this.props.resume.location} onChange={(e) => this.handleChange(e, "location")}/>
+                        </div>
+                        <div className="form-group">
+                            <label className="label-hidden">E-Mail</label>
+                            <input onKeyPress={this.preventSubmit} maxlength="40" type="email" className="form-control" placeholder="E-mail address" type="text" value={this.props.resume.email} onChange={(e) => this.handleChange(e, "email")}/>
+                        </div>
+                        <div className="form-group">
+                            <label className="label-hidden">Phone</label>
+                            <input onKeyPress={this.preventSubmit} maxlength="20" type="text" className="form-control" placeholder="Phone Number" value={this.props.resume.phone} onChange={(e) => this.handleChange(e, "phone")}/>
+                        </div>
+                        <div className="form-group">
+                            <label className="label-hidden">Current Position</label>
+                            <input onKeyPress={this.preventSubmit} maxlength="40" type="text" className="form-control" placeholder="Current Position" value={this.props.resume.currentPosition} onChange={(e) => this.handleChange(e, "currentPosition")}/>
+                        </div>
+                        <div className="form-group">
+                            <label className="label-hidden">Summary</label>
+                            <textarea spellcheck="true" maxlength="244" rows="6" className="form-control" placeholder="Summary" type="text" value={this.props.resume.summary} onChange={(e) => this.handleChange(e, "summary")}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="resume-card card">
+            <div class="resume-card-header card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h5 class="mb-0">
+                    <i class="fas fa-briefcase"></i>
+                    Experience
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div id="edit-container">
+
+                    </div>
+                    <ExperienceEditor experience={this.props.resume.experience} addExperience={this.props.addExperience} updateExperience={this.props.updateExperience} deleteExperience={this.props.deleteExperience} reOrder={this.props.reOrder} />
+                </div>
+            </div>
+        </div>
+        <div class="resume-card card">
+            <div class="resume-card-header card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <h5 class="mb-0">
+                    <i class="fas fa-graduation-cap"></i>
+                    Education/Training
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    <EducationEditor education={this.props.resume.education} addEducation={this.props.addEducation} updateEducation={this.props.updateEducation} deleteEducation={this.props.deleteEducation} reOrder={this.props.reOrder} />
+                </div>
+            </div>
+        </div>
+
+        <div class="resume-card card">
+            <div class="resume-card-header card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <h5 class="mb-0">
+                    <i class="fas fa-code"></i>
+                    Skills
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                <div class="card-body">
+                    <SkillsEditor skills={this.props.resume.skills} addSkill={this.props.addSkill} updateSkill={this.props.updateSkill} deleteSkill={this.props.deleteSkill} reOrder={this.props.reOrder} />
+                </div>
+            </div>
+        </div>
+    </div>
+    )
+
+    }
+    }
+
+    class ExperienceEditor extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    currentExperience: {
+    title: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    location: "",
+    description: "",
+    descriptionList: []
+    },
+    editIndex: -1,
+    }
+    this.resetExperience = this.resetExperience.bind(this);
+    this.handleExpChange = this.handleExpChange.bind(this);
+    this.addExp = this.addExp.bind(this);
+    this.editMode = this.editMode.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
+    this.updateExp = this.updateExp.bind(this);
+    }
+
+    resetExperience() {
+    this.setState({
+    currentExperience: {
+    title: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    location: "",
+    description: ""
+    },
+    editIndex: -1
+    })
+    }
+
+    handleExpChange(e, field) {
+    const value = e.target.value;
+    const currentExp = Object.assign({}, this.state.currentExperience);
+    currentExp[field] = value;
+    this.setState({
+    currentExperience: currentExp
+    });
+    }
+
+    addExp() {
+    if (this.state.currentExperience.title && this.state.currentExperience.company) {
+    this.props.addExperience(this.state.currentExperience);
+    this.resetExperience();
+    }
+
+    }
+
+    editMode(i) {
+    console.log(this.props.experience[i]);
+    this.setState({
+    currentExperience: this.props.experience[i],
+    editIndex: i
+    }, () => console.log(this.state.editIndex))
+    }
+
+    cancelEdit() {
+    this.resetExperience();
+    }
+
+    updateExp() {
+    this.props.updateExperience(this.state.currentExperience, this.state.editIndex);
+    this.resetExperience();
+    }
+
+
+    render() {
+    return (
+    <div className="input-holder">
+        {this.state.editIndex < 0 && this.props.experience.length > 0 && <h6 className="edit-label">Current Experience</h6>}
+        {this.state.editIndex < 0 && this.props.experience.map((job, i) => {
+        return (
+        <div className="edit-card">
+            <div className="order-wrapper">
+                {i > 0 && <div className="order order-up" onClick={() => this.props.reOrder("experience", i, -1)}><i className="fas fa-caret-up"></i></div>}
+                {this.props.experience.length > 1 && i < this.props.experience.length - 1 && <div className="order order-down" onClick={() => this.props.reOrder("experience", i, 1)}><i className="fas fa-caret-down"></i></div>}
+            </div>
+            <p style={{fontWeight: "bold"}}>{job.title}</p>
+            <p>{job.company}</p>
+            <div data-index={i} className="edit-btn edit" onClick={() => this.editMode(i)}><i className="fas fa-pencil-alt"></i></div>
+            <div data-index={i} className="edit-btn delete" onClick={() => this.props.deleteExperience(i)}><i className="fas fa-trash-alt"></i></div>
+        </div>
+        )
+        })}
+        <div className="form-group top-group">
+            <label className="label-hidden">Title</label>
+            <input className="form-control" placeholder="Title" type="text" value={this.state.currentExperience.title} onChange={(e) => this.handleExpChange(e, "title")}/>
+        </div>
+        <div className="form-group">
+            <label className="label-hidden">Company</label>
+            <input className="form-control" placeholder="Employer" type="text" value={this.state.currentExperience.company} onChange={(e) => this.handleExpChange(e, "company")}/>
+        </div>
+
+        <div className="form-row">
+            <div className="form-group col-md-6">
+                <label className="label-hidden" for="inputEmail4">Email</label>
+                <input className="form-control" placeholder="Start Date" type="text" value={this.state.currentExperience.startDate} onChange={(e) => this.handleExpChange(e, "startDate")}/>
+            </div>
+            <div className="form-group col-md-6">
+                <label className="label-hidden" for="inputPassword4">Password</label>
+                <input className="form-control" placeholder="End Date" type="text" value={this.state.currentExperience.endDate} onChange={(e) => this.handleExpChange(e, "endDate")}/>
+            </div>
+        </div>
+
+        <div className="form-group">
+            <label className="label-hidden">Location</label>
+            <input className="form-control" placeholder="Location" type="text" value={this.state.currentExperience.location} onChange={(e) => this.handleExpChange(e, "location")}/>
+        </div>
+        <div className="form-group">
+            <div className="experience-formats">
+                <div className="exp-format paragraph format-selected">Paragraph</div>
+                <div className="exp-format list">List</div>
+            </div>
+            <label className="label-hidden">Description</label>
+            <textarea rows="6" className="form-control" placeholder="Job Description/Responsibilities" type="text" value={this.state.currentExperience.description} onChange={(e) => this.handleExpChange(e, "description")}/>
+        </div>
+        {this.state.editIndex < 0 && <div className="add-btn-wrapper"><div className="add-btn" onClick={this.addExp}><i className="fas fa-plus"></i> Add Experience</div></div>}
+        {this.state.editIndex >= 0 && <div className="edit-controls">
+            <div className="edit-control cancel" onClick={this.cancelEdit}><i className="fas fa-times"></i> Cancel</div>
+            <div className="edit-control done" onClick={this.updateExp}><i className="fas fa-check"></i> Update</div>
+        </div>}
+    </div>
+    )
+    }
+    }
+
+    class EducationEditor extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    currentEducation: {
+    school: "",
+    degree: "",
+    startYear: "",
+    endYear: "",
+    location: "",
+    achievements: ""
+    },
+    editIndex: -1
+    }
+    this.resetEducation = this.resetEducation.bind(this);
+    this.handleEduChange = this.handleEduChange.bind(this);
+    this.addEdu = this.addEdu.bind(this);
+    this.editMode = this.editMode.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
+    this.updateEdu = this.updateEdu.bind(this);
+    }
+
+    resetEducation() {
+    this.setState({
+    currentEducation: {
+    school: "",
+    degree: "",
+    startYear: "",
+    endYear: "",
+    location: "",
+    achievements: ""
+    },
+    editIndex: -1,
+    invalidInput: false
+    })
+    }
+
+    handleEduChange(e, field) {
+    const value = e.target.value;
+    const currentEdu = Object.assign({}, this.state.currentEducation);
+    currentEdu[field] = value;
+    this.setState({
+    currentEducation: currentEdu
+    });
+    }
+
+    addEdu() {
+    if (this.state.currentEducation.school && this.state.currentEducation.degree) {
+    this.props.addEducation(this.state.currentEducation);
+    }
+
+    }
+
+    editMode(i) {
+    console.log(i, this.props.education[i]);
+    this.setState({
+    currentEducation: this.props.education[i],
+    editIndex: i
+    })
+    }
+
+    cancelEdit() {
+    this.resetEducation();
+    }
+
+    updateEdu() {
+    this.props.updateEducation(this.state.currentEducation, this.state.editIndex);
+    this.resetEducation();
+    }
+
+    render() {
+    return (
+    <div className="input-holder">
+        {this.state.editIndex < 0 && this.props.education.length > 0 && <h6 className="edit-label">Current Education</h6>}
+        {this.state.editIndex < 0 && this.props.education.map((entry, i) => {
+        return (
+        <div className="edit-card">
+            <div className="order-wrapper">
+                {i > 0 && <div className="order order-up"><i className="fas fa-caret-up" onClick={() => this.props.reOrder("education", i, -1)}></i></div>}
+                {this.props.education.length > 1 && i < this.props.education.length - 1 && <div className="order order-down" onClick={() => this.props.reOrder("education", i, 1)}><i className="fas fa-caret-down"></i></div>}
+            </div>
+            <p style={{fontWeight: "bold"}}>{entry.school}</p>
+            <p>{entry.degree}</p>
+            <div data-index={i} className="edit-btn edit" onClick={() => this.editMode(i)}><i className="fas fa-pencil-alt"></i></div>
+            <div data-index={i} className="edit-btn delete" onClick={() => this.props.deleteEducation(i)}><i className="fas fa-trash-alt"></i></div>
+        </div>
+        )
+        })}
+        <div className="form-group top-group">
+            <label className="label-hidden">School</label>
+            <input className="form-control" placeholder="School" type="text" value={this.state.currentEducation.school} onChange={(e) => this.handleEduChange(e, "school")}/>
+        </div>
+        <div className="form-group">
+            <label className="label-hidden">Degree</label>
+            <input className="form-control" placeholder="Degree" type="text" value={this.state.currentEducation.degree} onChange={(e) => this.handleEduChange(e, "degree")}/>
+        </div>
+
+        <div className="form-row">
+            <div className="form-group col-md-6">
+                <label className="label-hidden" for="inputEmail4">Start Year</label>
+                <input className="form-control" placeholder="Start Year" type="text" value={this.state.currentEducation.startYear} onChange={(e) => this.handleEduChange(e, "startYear")}/>
+            </div>
+            <div className="form-group col-md-6">
+                <label className="label-hidden" for="inputPassword4">End Year</label>
+                <input className="form-control" placeholder="End Year" type="text" value={this.state.currentEducation.endYear} onChange={(e) => this.handleEduChange(e, "endYear")}/>
+            </div>
+        </div>
+
+        <div className="form-group">
+            <label className="label-hidden">Location</label>
+            <input className="form-control" placeholder="Location" type="text" value={this.state.currentEducation.location} onChange={(e) => this.handleEduChange(e, "location")}/>
+        </div>
+        <div className="form-group">
+            <label className="label-hidden">Achievements</label>
+            <textarea rows="6" className="form-control" placeholder="Achievements" type="text" value={this.state.currentEducation.achievements} onChange={(e) => this.handleEduChange(e, "achievements")}/>
+        </div>
+        {this.state.editIndex < 0 && <div className="add-btn-wrapper"><div className="add-btn" onClick={this.addEdu}><i className="fas fa-plus"></i> Add Education</div></div>}
+        {this.state.editIndex >= 0 && <div className="edit-controls">
+            <div className="edit-control cancel" onClick={this.cancelEdit}><i className="fas fa-times"></i> Cancel</div>
+            <div className="edit-control done" onClick={this.updateEdu}><i className="fas fa-check"></i> Update</div>
+        </div>}
+    </div>
+    )
+    }
+    }
+
+    class SkillsEditor extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    skill: "",
+    editIndex: -1
+    }
+    this.resetSkills = this.resetSkills.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.add = this.add.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.editMode = this.editMode.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
+    this.update = this.update.bind(this);
+    }
+
+    resetSkills() {
+    this.setState({
+    skill: "",
+    editIndex: -1
+    })
+    }
+
+    handleChange(e) {
+    const skill = e.target.value;
+    this.setState({
+    skill: skill
+    })
+    }
+
+    add() {
+    if (this.state.skill) {
+    this.props.addSkill(this.state.skill);
+    this.resetSkills();
+    }
+    }
+
+    handleKeyPress(e) {
+    if (event.keyCode === 13 && e.target.value != "") {
+    e.preventDefault();
+    if (this.state.editIndex < 0) {
+    this.add();
+    } else {
+    this.update();
+    }
+
+    }
+    }
+
+    editMode(i) {
+    this.setState({
+    skill: this.props.skills[i],
+    editIndex: i
+    })
+    }
+
+    cancelEdit() {
+    this.resetSkills();
+    }
+
+    update() {
+    this.props.updateSkill(this.state.skill, this.state.editIndex);
+    this.resetSkills();
+    }
+
+
+    render() {
+    return (
+    <div className="input-holder">
+        {this.state.editIndex < 0 && this.props.skills.length > 0 && <h6 className="edit-label">Current Skills</h6>}
+        {this.state.editIndex < 0 && this.props.skills.map((skill, i) => {
+        return (
+        <div className="edit-card skill-card">
+            <div className="order-wrapper">
+                {i > 0 && <div className="order order-up" onClick={() => this.props.reOrder("skills", i, -1)}><i className="fas fa-caret-up"></i></div>}
+                {this.props.skills.length > 1 && i < this.props.skills.length - 1 && <div className="order order-down" onClick={() => this.props.reOrder("skills", i, 1)}><i className="fas fa-caret-down"></i></div>}
+            </div>
+            <p style={{fontWeight: "bold"}}>{skill}</p>
+            <div data-index={i} className="edit-btn edit" onClick={() => this.editMode(i)}><i className="fas fa-pencil-alt"></i></div>
+            <div data-index={i} className="edit-btn delete" onClick={() => this.props.deleteSkill(i)}><i className="fas fa-trash-alt"></i>                  </div>
+        </div>
+        )
+        })}
+        <div className="form-group top-group">
+            <label className="label-hidden">Skill</label>
+            <input className="form-control" placeholder="Skill" type="text" value={this.state.skill} onChange={this.handleChange} onKeyPress={this.handleKeyPress} />
+        </div>
+        <div className="add-btn-wrapper">
+            {this.state.editIndex < 0 && <div className="add-btn-wrapper"><div className="add-btn" onClick={this.add}><i className="fas fa-plus"></i> Add Skill</div></div>}
+            {this.state.editIndex >= 0 && <div className="edit-controls">
+                <div className="edit-control cancel" onClick={this.cancelEdit}><i className="fas fa-times"></i> Cancel</div>
+                <div className="edit-control done" onClick={this.update}><i className="fas fa-check"></i> Update</div>
+            </div>}
+        </div>
+    </div>
+    )
+    }
+    }
+
+    class Autocomplete extends React.Component {
+    static defaultProps = {
+    suggestions: ["Alligator", "Mountain Lion", "Zebroid", "Carnegie Hall"]
+    };
+
+    constructor(props) {
+    super(props);
+
+    this.state = {
+    // The active selection's index
+    activeSuggestion: 0,
+    // The suggestions that match the user's input
+    filteredSuggestions: [],
+    // Whether or not the suggestion list is shown
+    showSuggestions: false,
+    // What the user has entered
+    userInput: ""
+    };
+    }
+
+    // Event fired when the input value is changed
+    onChange = e => {
+    const { suggestions } = this.props;
+    const userInput = e.currentTarget.value;
+
+    // Filter our suggestions that don't contain the user's input
+    const filteredSuggestions = suggestions.filter(
+    suggestion =>
+    suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    );
+
+    // Update the user input and filtered suggestions, reset the active
+    // suggestion and make sure the suggestions are shown
+    this.setState({
+    activeSuggestion: 0,
+    filteredSuggestions,
+    showSuggestions: true,
+    userInput: e.currentTarget.value
+    });
+    };
+
+    // Event fired when the user clicks on a suggestion
+    onClick = e => {
+    // Update the user input and reset the rest of the state
+    this.setState({
+    activeSuggestion: 0,
+    filteredSuggestions: [],
+    showSuggestions: false,
+    userInput: e.currentTarget.innerText
+    });
+    };
+
+    // Event fired when the user presses a key down
+    onKeyDown = e => {
+    const { activeSuggestion, filteredSuggestions } = this.state;
+
+    // User pressed the enter key, update the input and close the
+    // suggestions
+    if (e.keyCode === 13) {
+    this.setState({
+    activeSuggestion: 0,
+    showSuggestions: false,
+    userInput: filteredSuggestions[activeSuggestion]
+    });
+    }
+    // User pressed the up arrow, decrement the index
+    else if (e.keyCode === 38) {
+    if (activeSuggestion === 0) {
+    return;
+    }
+
+    this.setState({ activeSuggestion: activeSuggestion - 1 });
+    }
+    // User pressed the down arrow, increment the index
+    else if (e.keyCode === 40) {
+    if (activeSuggestion - 1 === filteredSuggestions.length) {
+    return;
+    }
+
+    this.setState({ activeSuggestion: activeSuggestion + 1 });
+    }
+    };
+
+    render() {
+    const {
+    onChange,
+    onClick,
+    onKeyDown,
+    state: {
+    activeSuggestion,
+    filteredSuggestions,
+    showSuggestions,
+    userInput
+    }
+    } = this;
+
+    let suggestionsListComponent;
+
+    if (showSuggestions && userInput) {
+    if (filteredSuggestions.length) {
+    suggestionsListComponent = (
+    <ul class="suggestions">
+        {filteredSuggestions.map((suggestion, index) => {
+        let className;
+
+        // Flag the active suggestion with a class
+        if (index === activeSuggestion) {
+        className = "suggestion-active";
+        }
+
+        return (
+        <li className={className}
+            key={suggestion}
+            onClick={onClick}>
+            {suggestion}
+        </li>
+        );
+        })}
+    </ul>
+    );
+    } else {
+    suggestionsListComponent = (
+    <div class="no-suggestions">
+        <em>No suggestions, you're on your own!</em>
+    </div>
+    );
+    }
+    }
+
+    return (
+    <div>
+        <input type="text"
+               onChange={onChange}
+               onKeyDown={onKeyDown}
+               value={userInput} />
+        {suggestionsListComponent}
+    </div>
+    );
+    }
+    }
+
+    class Modal extends React.Component {
+    constructor(props) {
+    super(props)
+    this.state = {
+    loading: false,
+    pdf: false,
+    }
+    this.onClose = this.onClose.bind(this);
+    this.retry = this.retry.bind(this);
+    }
+
+    retry() {
+    this.setState({
+    error: false
+    })
+    }
+
+    onClose(e) {
+    if(e.target === e.currentTarget) {
+    this.props.onClose && this.props.onClose(e);
+    }
+    };
+
+
+    render() {
+    if (!this.props.show) {
+    return null;
+    }
+    return (
+    <div className="custom-modal" id="modal" onClick={this.onClose}>
+        <div className="window">
+            <div className="modal-close" onClick={this.onClose}>X</div>
+
+
+        </div>
+    </div>
+    );
+    }
+    }
+
+
+    ReactDOM.render(
+    <App />, document.getElementById("root"))
+</script>
+
+
+
+<script language="javascript" type="text/javascript">
+    $("#apiTest").click(function () {
+        testAPI();
+    })
+    jQuery(function ($) {
+        var moduleId = parseInt("[ModuleContext:ModuleId]");
+
+        var localizedSettings = {};
+
+        var viewmodel = new SPA_Template.itemListViewModel(moduleId, localizedSettings);
+        viewmodel.init();
+
+        ko.applyBindings(viewmodel, $("#Items-" + moduleId)[0]);
+
+    });
+</script>
